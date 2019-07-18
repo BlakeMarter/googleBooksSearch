@@ -14,7 +14,8 @@ class Books extends Component {
     title: "",
     author: "",
     synopsis: "",
-    link: ""
+    link: "",
+    clicked: false
   };
 
   handleInputChange = event => {
@@ -62,11 +63,12 @@ class Books extends Component {
       title: bTitle,
       author: bAuthor,
       synopsis: bSynopsis,
-      link: bLink
+      link: bLink,
+      clicked: true
     })
-      .then(res => console.log("this happened"))
+      .then(res => { console.log("this happened") })
       .catch(err => console.log(err));
-
+    // this.setState({ clicked: true });
   };
 
   render() {
@@ -120,6 +122,7 @@ class Books extends Component {
                           className="btn btn-success float-right mb-4"
                           value={book.id}
                           name="searchGoogs"
+                          // disabled={!(book.clicked)}
                           onClick={this.handleSaveFormSubmit}
                         >
                           Save Book

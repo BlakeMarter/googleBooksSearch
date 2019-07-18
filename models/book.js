@@ -7,6 +7,7 @@ const bookSchema = new Schema({
   synopsis: String,
   image: String,
   link: String,
+  clicked: Boolean,
   date: { type: Date, default: Date.now }
 });
 
