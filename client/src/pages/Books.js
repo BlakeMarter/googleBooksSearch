@@ -13,26 +13,8 @@ class Books extends Component {
     image: "",
     title: "",
     author: "",
-    synopsis: ""
-  };
-
-  componentDidMount() {
-    this.loadBooks();
-  };
-
-
-  loadBooks = () => {
-    API.searchBooks(this.state.title)
-      .then(res =>
-        this.setState({ googlebooks: res.data })
-      )
-      .catch(err => console.log(err));
-  };
-
-  deleteBook = id => {
-    API.deleteBook(id)
-      .then(res => this.loadBooks())
-      .catch(err => console.log(err));
+    synopsis: "",
+    link: ""
   };
 
   handleInputChange = event => {
@@ -45,27 +27,20 @@ class Books extends Component {
 
   handleSearchFormSubmit = event => {
     event.preventDefault();
-    // console.log(event.target.value);
     const title = event.target.value;
     if (this.state.title) {
       API.searchBooks(title)
         .then(res => {
           const searchRes = res.data.items;
-
           searchRes.forEach(book => {
-            // console.log(book.id);
-
             this.setState({ googlebooks: searchRes })
           })
-          // console.log(this.state.googlebooks);
         })
         .catch(err => console.log(err));
     }
   };
 
   handleSaveFormSubmit = event => {
-    // console.log(event.target.value);
-    // console.log(this.state.googlebooks);
     let selectedBook = [];
     this.state.googlebooks.map(book => {
       if (event.target.value === book.id) {
@@ -73,21 +48,21 @@ class Books extends Component {
       }
       return selectedBook;
     })
+    console.log(selectedBook);
 
     const bImage = selectedBook.volumeInfo.imageLinks.thumbnail;
     const bTitle = selectedBook.volumeInfo.title;
     const bAuthor = selectedBook.volumeInfo.authors[0];
     const bSynopsis = selectedBook.volumeInfo.description;
+    const bLink = selectedBook.volumeInfo.canonicalVolumeLink;
+
     event.preventDefault();
-    // console.log(this.state.title);
-    // console.log(this.state.author);
-    // console.log(this.state.synopsis);
-    // console.log(this.state.image);
     API.saveBook({
       image: bImage,
       title: bTitle,
       author: bAuthor,
-      synopsis: bSynopsis
+      synopsis: bSynopsis,
+      link: bLink
     })
       .then(res => console.log("this happened"))
       .catch(err => console.log(err));
@@ -95,12 +70,6 @@ class Books extends Component {
   };
 
   render() {
-    console.log("***************************")
-    console.log(this.state);
-    // console.log(this.state.title);
-    // console.log(this.state.author);
-    // console.log(this.state.synopsis);
-    // console.log(this.state.image);
     return (
       <Container fluid>
         <Row>
@@ -128,7 +97,7 @@ class Books extends Component {
           </Col>
           <Col size="md-12 sm-12">
             <Jumbotron style={{ height: 20 }}>
-              <h1>Books On My List</h1>
+              <h1>Search Results</h1>
             </Jumbotron>
             {this.state.googlebooks.length ? (
               <List>
@@ -137,7 +106,7 @@ class Books extends Component {
                     <Container className="mt-2 mb-2">
                       <Row>
                         <Col size="md-3">
-                          <img className="mr-2" src={book.volumeInfo.imageLinks.thumbnail} alt="" />
+                          <img className="mr-2 mt-3" src={book.volumeInfo.imageLinks.thumbnail} alt="" />
                         </Col>
                         <Col size="md-8">
                           <p className="mt-4"><strong>Title:</strong> {book.volumeInfo.title}</p>
@@ -148,7 +117,7 @@ class Books extends Component {
                       </Row>
                       <Link to={"/books/" + book.id}>
                         <button
-                          className="btn btn-success float-right mb-5"
+                          className="btn btn-success float-right mb-4"
                           value={book.id}
                           name="searchGoogs"
                           onClick={this.handleSaveFormSubmit}
@@ -165,6 +134,7 @@ class Books extends Component {
               )}
           </Col>
         </Row>
+        <div className="mb-5"></div>
       </Container>
     );
   }

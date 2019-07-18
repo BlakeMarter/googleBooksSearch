@@ -7,7 +7,9 @@ function Nav() {
       <a className="navbar-brand" href="/">
         Search Google Books
       </a>
-      <Link to="/savedbooks"><button className="btn btn-success">SavedBooks</button></Link>
+      <Link to="/savedbooks">
+        <button className="btn btn-success">SavedBooks</button>
+      </Link>
     </nav>
   );
 }

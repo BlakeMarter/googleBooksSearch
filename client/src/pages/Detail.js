@@ -43,13 +43,14 @@ class Detail extends Component {
                     <Container className="mt-2 mb-2">
                       <Row>
                         <Col size="md-3">
-                          <img className="mr-2" src={book.image} alt="" />
+                          <img className="mr-2 mt-3 mb-3" src={book.image} alt="" />
                         </Col>
                         <Col size="md-8">
                           <p className="mt-4"><strong>Title:</strong> {book.title}</p>
                           <p><strong>Author(s):</strong> {book.author}</p>
 
                           <p className="mt-3"><strong>Description:</strong> {book.synopsis}</p>
+                          <a href={book.link} target="blank"><button className="btn btn-primary float-right mb-2">More Info</button></a>
                         </Col>
                       </Row>
                     </Container>
